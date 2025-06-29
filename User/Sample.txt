@@ -1,0 +1,16 @@
+﻿The user can log in using email or name and the below stored procedure is being used:
+
+Create proc LoginProc
+@str varchar(100),
+@pass varchar(100)
+as
+begin
+	select * from users where (email = @str or fullname = @str) and pass=@pass and Status='Active';
+end 
+
+the sub course cards will be available in the user dashboard(in "my courses" section) already done by my side and now i want you to perform the task of video playing where the topics for the selected sub course will be on the right side panel and the video currently playing will be on the left panel.
+the user can select the next video to play from the right side panel(of topic list) but the user will not be able to skip any video. for example user is watching 1st video then he clicks on the 3rd video then this action should not be allowed it should be allowed only when the user wants to play next video in the sequence.
+Next I want you to track the record of user progress of playlist completion because i will have to show the progress bar of user of how much has the user completed watching the videos in the user dashboard under progress bar(example 50%, 60%, etc).
+the course completion certificate should only be provided when the user has completed watching all the videos.
+
+Provide provide simple solution step by step and use only stored procedures and not inline queries

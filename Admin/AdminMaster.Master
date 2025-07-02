@@ -1,0 +1,321 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="AdminMaster.master.cs" Inherits="SikshaNew.Admin.AdminMaster" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <style>
+
+        .star-label {
+            font-family: 'Segoe UI Symbol', 'Arial Unicode MS', sans-serif;
+        }
+}
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f2f6;
+            overflow-x: hidden;
+            color: #2f3640;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #2f3640;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+            .sidebar h2 {
+                margin: 50px 70px; /* Top, Right, Bottom, Left */
+                color: #00a8ff;
+            }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+            .menu > li {
+                margin-bottom: 10px;
+            }
+
+        .menu-header {
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #353b48;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .menu-header:hover {
+                background-color: #00a8ff;
+            }
+
+        .submenu {
+            list-style: none;
+            padding-left: 20px;
+            display: none;
+        }
+
+            .submenu li a {
+                display: block;
+                padding: 8px;
+                border-radius: 5px;
+                color: #dcdde1;
+                text-decoration: none;
+            }
+
+                .submenu li a:hover {
+                    background-color: #00a8ff;
+                    color: white;
+                }
+
+        .float-right {
+            margin-left: auto;
+        }
+
+        .main {
+            margin-left: 50px; /* match the sidebar width */
+            padding: 30px;
+            background-color: #f1f2f6;
+            min-height: 100vh;
+        }
+        .logout-btn {
+    width: 100%;
+    background-color: #e84118;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.logout-btn:hover {
+    background-color: #c23616;
+}
+
+        .dashboard-cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            background-color: white;
+            flex: 1;
+            min-width: 250px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+            .dashboard-card.wide {
+                flex: 2;
+            }
+
+            .dashboard-card h4 {
+                margin-bottom: 10px;
+            }
+
+        .dashboard-count {
+            font-size: 26px;
+            font-weight: bold;
+            color: #00a8ff;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .chart-box {
+            height: 150px;
+            background-color: #dcdde1;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-top: 30px;
+        }
+
+            .section h4 {
+                margin-bottom: 15px;
+            }
+
+            .section ul {
+                list-style: disc;
+                padding-left: 20px;
+            }
+
+        .main-content {
+            margin-left: 280px; /* matches sidebar width */
+            padding: 30px;
+            min-height: 100vh;
+            background-color: #f1f2f6;
+            transition: margin-left 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .sidebar {
+                position: absolute;
+                z-index: 1000;
+            }
+
+
+        }
+    </style>
+    <title>Admin Panel</title>
+    <script>
+        function toggleMenu(menuId) {
+            const allSubmenus = document.querySelectorAll('.submenu');
+            allSubmenus.forEach(ul => {
+                if (ul.id !== menuId) {
+                    ul.style.display = 'none';
+                }
+            });
+
+            const targetMenu = document.getElementById(menuId);
+            if (targetMenu) {
+                targetMenu.style.display = targetMenu.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+
+            if (sidebar.style.display === 'none') {
+                sidebar.style.display = 'block';
+                mainContent.style.marginLeft = '280px';
+            } else {
+                sidebar.style.display = 'none';
+                mainContent.style.marginLeft = '0';
+            }
+        }
+
+    </script>
+
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+</head>
+
+
+<form id="form1" runat="server">
+    <!-- Main Content -->
+    <div class="main-content">
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server" />
+    </div>
+    <div id="menuToggle" onclick="toggleSidebar()" style="position: fixed; top: 55px; left: 20px; padding: 10px 15px; cursor: pointer; font-size: 24px; background-color: #2f3640; color: white; border-radius: 4px; z-index: 1100;">
+        &#9776;
+    </div>
+
+
+    <div class="sidebar">
+
+        <h2>
+            <a href="/Admin/AdminDashboard.aspx" style="color: #00a8ff; text-decoration: none;">Admin Panel</a>
+        </h2>
+
+        <ul class="menu">
+            <li>
+                <div class="menu-header" onclick="toggleMenu('menu1')">
+                    <i class="fas fa-book"></i>MasterCourse <i class="fas fa-caret-down float-right"></i>
+                </div>
+                <ul class="submenu" id="menu1">
+                    <li><a href="/Admin/MasterCourse/AddCourse.aspx"><i class="fas fa-plus"></i>New Course</a></li>
+                    <li><a href="/Admin/MasterCourse/SubCourse.aspx"><i class="fas fa-plus"></i>New Subcourse</a></li>
+                    <li><a href="/Admin/MasterCourse/AddTopic.aspx"><i class="fas fa-plus"></i>New Topic</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <div class="menu-header" onclick="toggleMenu('menu2')">
+                    <i class="fas fa-credit-card"></i>Subscription <i class="fas fa-caret-down float-right"></i>
+                </div>
+                <ul class="submenu" id="menu2">
+                    <li><a href="/Admin/Subscription/MasterSubscription.aspx"><i class="fas fa-plus-square"></i>Add Master Subscription</a></li>
+                    <li><a href="/Admin/Subscription/AddSubscription.aspx"><i class="fas fa-plus-square"></i>Add Subscription</a></li>
+                    <li><a href="/Admin/Subscription/Subscription_List.aspx"><i class="fas fa-list"></i>Subscription List</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <div class="menu-header" onclick="toggleMenu('menu3')">
+                    <i class="fas fa-file"></i>Material <i class="fas fa-caret-down float-right"></i>
+                </div>
+                <ul class="submenu" id="menu3">
+                    <li><a href="/Admin/Material/AddMaterial.aspx"><i class="fas fa-upload"></i>Add Assignment</a></li>
+                    <li><a href="/Admin/Material/MCQ.aspx"><i class="fas fa-list-ol"></i>Add MCQ</a></li>
+
+                </ul>
+            </li>
+
+            <li>
+                <div class="menu-header" onclick="toggleMenu('menu4')">
+                    <i class="fas fa-list"></i>MasterCourse List <i class="fas fa-caret-down float-right"></i>
+                </div>
+                <ul class="submenu" id="menu4">
+                    <li><a href="/Admin/MasterCourse/List/TopicList.aspx"><i class="fas fa-file-alt"></i>Topic List</a></li>
+                    <li><a href="/Admin/MasterCourse/List/CourseList.aspx"><i class="fas fa-file-alt"></i>Course List</a></li>
+                    <li><a href="/Admin/MasterCourse/List/SubcourseList.aspx"><i class="fas fa-file-alt"></i>Subcourse List</a></li>
+
+                </ul>
+            </li>
+
+            <li>
+                <div class="menu-header" onclick="toggleMenu('menu5')">
+                    <i class="fas fa-star-half-alt"></i>Ratings <i class="fas fa-caret-down float-right"></i>
+                </div>
+                <ul class="submenu" id="menu5">
+                    <li><a href="/Admin/ApproveRating.aspx"><i class="fas fa-check-circle"></i>Approve Rating</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <div class="menu-header" onclick="toggleMenu('menu6')">
+                    <i class="fas fa-users"></i>Users <i class="fas fa-caret-down float-right"></i>
+                </div>
+                <ul class="submenu" id="menu6">
+                    <li><a href="/Admin/UserAssignments.aspx"><i class="fas fa-list"></i>Users Assignments</a></li>
+                    <li><a href="/Admin/Users_List.aspx"><i class="fas fa-list"></i>Users List</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <div class="menu-header" onclick="toggleMenu('menu7')">
+                    <i class="fas fa-receipt"></i>Transaction History <i class="fas fa-caret-down float-right"></i>
+                </div>
+                <ul class="submenu" id="menu7">
+                    <li><a href="/Admin/trans.aspx"><i class="fas fa-file-invoice-dollar"></i>View Transactions</a></li>
+                </ul>
+            </li>
+        </ul>
+                    <div style="margin-top: 30px;">
+    <asp:Button ID="Button1" runat="server" Text="Logout" CssClass="logout-btn" OnClick="btnLogout_Click" />
+</div>
+    </div>            
+
+</form>
+</body>
+</html>

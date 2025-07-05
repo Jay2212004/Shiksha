@@ -93,13 +93,15 @@
         <label>Icon:</label>
         <br />
         <asp:FileUpload ID="FileUpload1" runat="server" CssClass="form-control" />
+        <!-- Button to Add Subcourses to Bundle -->
 
-        <br />
+
         <br />
 
         <label>Select Subcourses:</label>
         <asp:CheckBoxList ID="CheckBoxList1" runat="server" CssClass="checkboxlist" />
-
+        <asp:Button ID="btnAddToBundle" runat="server" Text="Add To Bundle" CssClass="btn-submit" OnClick="btnAddToBundle_Click" />
+        <asp:Label ID="lblCombinedSubcourses" runat="server" CssClass="message" ForeColor="Blue" />
         <asp:Button ID="Button1" runat="server" Text="Add Subscription" CssClass="btn-submit" OnClick="Button1_Click" />
 
         <asp:Label ID="LabelMessage" runat="server" CssClass="message" ForeColor="Green" />

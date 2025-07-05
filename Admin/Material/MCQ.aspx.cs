@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net.Mail;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -13,7 +14,7 @@ namespace SikshaNew.Admin.Material
         DataTable mcqTable;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Page.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
             Repeater1.ItemCommand += Repeater1_ItemCommand;
             Repeater1.ItemDataBound += Repeater1_ItemDataBound;
             con = new SqlConnection(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
@@ -159,11 +160,53 @@ namespace SikshaNew.Admin.Material
                 cmd.ExecuteNonQuery();
             }
 
+            int count = mcqTable.Rows.Count;
+            string course = DropDownList1.SelectedItem.Text;
+            string subcourse = DropDownList2.SelectedItem.Text;
+            string topic = DropDownList3.SelectedItem.Text;
+
+            SendEmailToAllUsers(course, subcourse, topic, count);
+
             Response.Write("<script>alert('MCQs saved successfully.');</script>");
             mcqTable.Clear();
             Session["MCQData"] = mcqTable;
             LoadAllMCQs();
             BindRepeater();
+        }
+
+        private void SendEmailToAllUsers(string course, string subcourse, string topic, int mcqCount)
+        {
+            string subject = $"📝 New MCQs Added in {subcourse}";
+            string body = $"Hello Learner,\n\nNew MCQs have been added under:\n\n" +
+                          $"📚 Course: {course}\n" +
+                          $"📘 Subcourse: {subcourse}\n" +
+                          $"🔖 Topic: {topic}\n" +
+                          $"❓ Total MCQs: {mcqCount}\n\n" +
+                          $"👉 Go to your dashboard and test your knowledge now!\n\n" +
+                          $"Happy Learning!\nTeam Shiksha Academy.";
+
+            SqlCommand getEmailsCmd = new SqlCommand("SELECT Email FROM Users WHERE status = 'Active'", con);
+            SqlDataReader rdr = getEmailsCmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                string toEmail = rdr["Email"].ToString();
+                SendEmail(toEmail, subject, body);
+            }
+            rdr.Close();
+        }
+
+        private void SendEmail(string toEmail, string subject, string body)
+        {
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("rrai07505@gmail.com");
+            mail.To.Add(toEmail);
+            mail.Subject = subject;
+            mail.Body = body;
+
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            smtp.Credentials = new System.Net.NetworkCredential("rrai07505@gmail.com", "bprbcsejgyqgudls");
+            smtp.EnableSsl = true;
+            smtp.Send(mail);
         }
 
         private void LoadAllMCQs()

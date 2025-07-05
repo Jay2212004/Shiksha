@@ -3,217 +3,193 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Admin Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
     <style>
-  body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-    background-color: #f1f2f6;
-    overflow-x: hidden;
-    color: #2f3640;
-}
-
-.sidebar {
-    width: 250px;
-    background: #2f3640;
-    color: white;
-    padding: 20px;
-    height: 100vh;
-    overflow-y: auto;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
-.sidebar h2 {
-    margin-bottom: 20px;
-    color: #00a8ff;
-}
-
-.menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.menu > li {
-    margin-bottom: 10px;
-}
-
-.menu-header {
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #353b48;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.menu-header:hover {
-    background-color: #00a8ff;
-}
-
-.submenu {
-    list-style: none;
-    padding-left: 20px;
-    display: none;
-}
-
-.submenu li a {
-    display: block;
-    padding: 8px;
-    border-radius: 5px;
-    color: #dcdde1;
-    text-decoration: none;
-}
-
-.submenu li a:hover {
-    background-color: #00a8ff;
-    color: white;
-}
-
-.float-right {
-    margin-left: auto;
-}
-
-
-
-.dashboard-cards {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
-}
-
-.dashboard-card {
-    background-color: white;
-    flex: 1;
-    min-width: 250px;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.dashboard-card.wide {
-    flex: 2;
-}
-
-.dashboard-card h4 {
-    margin-bottom: 10px;
-}
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-.table-bordered {
-    border: 1px solid #dee2e6;
-}
-
-.table-bordered th,
-.table-bordered td {
-    border: 1px solid #dee2e6;
-    padding: 10px;
-    text-align: left;
-    vertical-align: middle;
-}
-
-.table th {
-    background-color: #f8f9fa;
-    color: #2f3640;
-    font-weight: 600;
-}
-
-.table tr:hover {
-    background-color: #f1f2f6;
-}
-
-.btn-sm {
-    padding: 4px 10px;
-    font-size: 13px;
-    border-radius: 4px;
-}
-
-.dashboard-count {
-    font-size: 26px;
-    font-weight: bold;
-    color: #00a8ff;
-    margin-bottom: 10px;
-    display: block;
-}
-
-.chart-box {
-    height: 150px;
-    background-color: #dcdde1;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-.section {
-    background-color: white;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    margin-top: 30px;
-}
-
-.section h4 {
-    margin-bottom: 15px;
-}
-
-.section ul {
-    list-style: disc;
-    padding-left: 20px;
-}
-
-</style>
+        .main {
+            padding: 20px;
+        }
+        .dashboard-cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .dashboard-card {
+            background: #f5f6fa;
+            border-radius: 12px;
+            padding: 20px;
+            flex: 1 1 30%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .dashboard-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2f3640;
+        }
+        .chart-box {
+            width: 100%;
+            height: 200px;
+        }
+        .section {
+            margin-top: 40px;
+        }
+        .dropdown-row {
+            margin-bottom: 20px;
+        }
+        .dropdown-row label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .styled-dropdown {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        .styled-grid {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .styled-grid th, .styled-grid td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        .styled-grid th {
+            background-color: #e1e1e1;
+        }
+    </style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
- 
+
     <div class="main">
-    <h2>Welcome, Admin</h2>
+        <h2>Welcome, Admin</h2>
         <div class="dashboard-cards">
-    <div class="dashboard-card">
-        <h4>Total Users</h4>
-        <asp:Label ID="lblTotalUsers" runat="server" CssClass="dashboard-count" />
-        <div class="chart-box">Users Graph</div>
-    </div>
-    <div class="dashboard-card">
-        <h4>Active Users</h4>
-        <asp:Label ID="lblActiveUsers" runat="server" CssClass="dashboard-count" />
-        <div class="chart-box">Active Status</div>
-    </div>
-    <div class="dashboard-card">
-        <h4>Inactive Users</h4>
-        <asp:Label ID="lblInactiveUsers" runat="server" CssClass="dashboard-count" />
-        <div class="chart-box">Inactive Status</div>
-    </div>
-</div>
+            <div class="dashboard-card">
+                <h4>Total Users</h4>
+                <asp:Label ID="lblTotalUsers" runat="server" CssClass="dashboard-count" />
+                <canvas id="totalUsersChart" class="chart-box"></canvas>
+            </div>
+            <div class="dashboard-card">
+                <h4>Active Users</h4>
+                <asp:Label ID="lblActiveUsers" runat="server" CssClass="dashboard-count" />
+                <canvas id="userStatusChart" class="chart-box"></canvas>
+            </div>
+            <div class="dashboard-card">
+                <h4>Inactive Users</h4>
+                <asp:Label ID="lblInactiveUsers" runat="server" CssClass="dashboard-count" />
+                <canvas id="inactiveUsersChart" class="chart-box"></canvas>
+            </div>
+        </div>
 
-<div class="dashboard-cards">
-    <div class="dashboard-card">
-        <h4>Total Courses</h4>
-        <asp:Label ID="lblCourses" runat="server" CssClass="dashboard-count" />
-        <div class="chart-box">Course Info</div>
-    </div>
-    <div class="dashboard-card">
-        <h4>Total Subcourses</h4>
-        <asp:Label ID="lblSubCourses" runat="server" CssClass="dashboard-count" />
-        <div class="chart-box">Subcourse Info</div>
-    </div>
-    <div class="dashboard-card">
-        <h4>Sold Courses</h4>
-        <asp:Label ID="lblSoldCourses" runat="server" CssClass="dashboard-count" />
-        <div class="chart-box">Sales</div>
-    </div>
-</div>
+        <div class="dashboard-cards">
+            <div class="dashboard-card">
+                <h4>Total Courses</h4>
+                <asp:Label ID="lblCourses" runat="server" CssClass="dashboard-count" />
+                <canvas id="courseChart" class="chart-box"></canvas>
+            </div>
+            <div class="dashboard-card">
+                <h4>Total Subcourses</h4>
+                <asp:Label ID="lblSubCourses" runat="server" CssClass="dashboard-count" />
+                <canvas id="subcourseChart" class="chart-box"></canvas>
+            </div>
+            <div class="dashboard-card">
+                <h4>Sold Courses</h4>
+                <asp:Label ID="lblSoldCourses" runat="server" CssClass="dashboard-count" />
+                <canvas id="salesChart" class="chart-box"></canvas>
+            </div>
+        </div>
 
+    
+        <div class="section">
+            <div class="dropdown-row">
+                <label>Select Mastercourse:</label>
+                <asp:DropDownList ID="ddlMastercourse" runat="server" AutoPostBack="true" CssClass="styled-dropdown" OnSelectedIndexChanged="ddlMastercourse_SelectedIndexChanged" />
+            </div>
+            <asp:GridView ID="gvSubcourses" runat="server" CssClass="styled-grid" AutoGenerateColumns="true" />
+        </div>
+
+    
+        <div class="section">
+            <div class="dropdown-row">
+                <label>Select Year for Transactions:</label>
+                <asp:DropDownList ID="ddlYear" runat="server" CssClass="styled-dropdown" AutoPostBack="true" OnSelectedIndexChanged="ddlYear_SelectedIndexChanged">
+                    <asp:ListItem Text="2024" Value="2024" />
+                    <asp:ListItem Text="2025" Value="2025" Selected="True" />
+                </asp:DropDownList>
+            </div>
+            <canvas id="transactionChart" class="chart-box" style="height: 300px;"></canvas>
+        </div>
+    </div>
+
+
+    <script>
+        const totalUsers = parseInt("<%= lblTotalUsers.Text %>");
+        const activeUsers = parseInt("<%= lblActiveUsers.Text %>");
+        const inactiveUsers = parseInt("<%= lblInactiveUsers.Text %>");
+        const totalCourses = parseInt("<%= lblCourses.Text %>");
+        const totalSubcourses = parseInt("<%= lblSubCourses.Text %>");
+        const soldCourses = parseInt("<%= lblSoldCourses.Text %>");
+        const monthlySales = <%= monthlySalesJson %>;
+
+        new Chart(document.getElementById("totalUsersChart"), {
+            type: 'doughnut',
+            data: {
+                labels: ['Active Users', 'Inactive Users'],
+                datasets: [{ data: [activeUsers, inactiveUsers], backgroundColor: ['#00a8ff', '#dcdde1'] }]
+            }
+        });
+
+        new Chart(document.getElementById("userStatusChart"), {
+            type: 'bar',
+            data: {
+                labels: ['Active', 'Inactive'],
+                datasets: [{ label: 'Users', data: [activeUsers, inactiveUsers], backgroundColor: ['#00a8ff', '#f19066'] }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+
+        new Chart(document.getElementById("courseChart"), {
+            type: 'bar',
+            data: {
+                labels: ['Courses', 'Subcourses'],
+                datasets: [{ label: 'Course Info', data: [totalCourses, totalSubcourses], backgroundColor: ['#00cec9', '#6c5ce7'] }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+
+        new Chart(document.getElementById("salesChart"), {
+            type: 'pie',
+            data: {
+                labels: ['Sold Courses', 'Remaining Courses'],
+                datasets: [{ data: [soldCourses, totalCourses - soldCourses], backgroundColor: ['#00b894', '#ffeaa7'] }]
+            }
+        });
+
+        new Chart(document.getElementById("subcourseChart"), {
+            type: 'bar',
+            data: {
+                labels: ['Subcourses'],
+                datasets: [{ label: 'Total Subcourses', data: [totalSubcourses], backgroundColor: ['#6c5ce7'] }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+
+        new Chart(document.getElementById("inactiveUsersChart"), {
+            type: 'bar',
+            data: {
+                labels: ['Inactive Users'],
+                datasets: [{ label: 'Inactive Users', data: [inactiveUsers], backgroundColor: ['#e17055'] }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+
+        new Chart(document.getElementById("transactionChart"), {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{ label: 'Transaction Amount ₹', data: monthlySales, backgroundColor: '#0984e3' }]
+            },
+            options: { responsive: true, scales: { y: { beginAtZero: true } } }
+        });
+    </script>
 </asp:Content>

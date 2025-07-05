@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Web.UI.WebControls;
+using System.Net;
+using System.Net.Mail;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 namespace SikshaNew.Admin.Subscription
 {
     public partial class AddSubscription : System.Web.UI.Page
@@ -20,6 +23,59 @@ namespace SikshaNew.Admin.Subscription
             {
                 fetchSubscription();
                 fetchCourseList();
+                Session["SelectedSubcourses"] = null;
+            }
+        }
+        public void SendEmailToAllUsers(string subscriptionName, string courseName, List<string> subcourses)
+
+        {
+            SqlCommand getEmailsCmd = new SqlCommand("select Email from Users where status = 'Active'", conn);
+            SqlDataReader rdr = getEmailsCmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                string toEmail = rdr["Email"].ToString();
+                string subject = "📚 New Subscription Added: " + courseName;
+                string subList = string.Join(", ", subcourses);
+                string body = $"Hello Learner,\n\nA new \"{subscriptionName}\" subscription has been added to the Shiksha Academy platform " +
+                              $"for the Course \"{courseName}\".\n\n" +
+                              $"📘 Subcourses included: {subList}\n\n" +
+                              "👉 Explore the course in your dashboard and start learning today!\n\n" +
+                              "Happy Learning!\nTeam Shiksha Academy.";
+
+                SendEmail(toEmail, subject, body);
+            }
+
+            rdr.Close();
+        }
+
+
+        private void SendEmail(string toEmail, string subject, string body)
+        {
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("rrai07505@gmail.com");
+            mail.To.Add(toEmail);
+            mail.Subject = subject;
+            mail.Body = body;
+
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            smtp.Credentials = new NetworkCredential("rrai07505@gmail.com", "bprbcsejgyqgudls");
+            smtp.EnableSsl = true;
+
+            smtp.Send(mail);
+        }
+
+        private List<string> SelectedSubcourses
+        {
+            get
+            {
+                if (Session["SelectedSubcourses"] == null)
+                    Session["SelectedSubcourses"] = new List<string>();
+                return (List<string>)Session["SelectedSubcourses"];
+            }
+            set
+            {
+                Session["SelectedSubcourses"] = value;
             }
         }
 
@@ -77,31 +133,43 @@ namespace SikshaNew.Admin.Subscription
             if (FileUpload1.HasFile)
             {
                 string filename = System.IO.Path.GetFileName(FileUpload1.FileName);
-                string folderPath = Server.MapPath("~/Uploads/Icons/");
-                System.IO.Directory.CreateDirectory(folderPath); // ensure folder exists
+                string folderPath = Server.MapPath("/Subscription_Icon/");
+                System.IO.Directory.CreateDirectory(folderPath); 
                 string filePath = folderPath + filename;
 
                 FileUpload1.SaveAs(filePath);
-                iconPath = "~/Uploads/Icons/" + filename;
+                iconPath = "/Subscription_Icon/" + filename;
             }
 
             int count = 0;
 
-            foreach (ListItem item in CheckBoxList1.Items)
+            foreach (string subcourse in SelectedSubcourses)
             {
-                if (item.Selected)
-                {
-                    string subcourse = item.Text;
-
-                    string query = $"exec SC_subscription '{courseName}', '{subcourse}', '{subType}', '{price}', '{duration}', '{iconPath}'";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.ExecuteNonQuery();
-                    count++;
-                }
+                string query = $"exec SC_subscription '{courseName}', '{subcourse}', '{subType}', '{price}', '{duration}', '{iconPath}'";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.ExecuteNonQuery();
+                count++;
             }
 
             LabelMessage.Text = count > 0 ? "Subscriptions added successfully!" : "Please select at least one subcourse.";
+            SelectedSubcourses.Clear();
+            lblCombinedSubcourses.Text = "";
+            SendEmailToAllUsers(subType, courseName, SelectedSubcourses);
+
         }
 
+        protected void btnAddToBundle_Click(object sender, EventArgs e)
+        {
+            foreach (ListItem item in CheckBoxList1.Items)
+            {
+                if (item.Selected && !SelectedSubcourses.Contains(item.Text))
+                {
+                    SelectedSubcourses.Add(item.Text);
+                }
+            }
+
+            
+            lblCombinedSubcourses.Text = string.Join(", ", SelectedSubcourses);
+        }
     }
 }

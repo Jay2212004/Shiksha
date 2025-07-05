@@ -2,6 +2,8 @@
 using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
+using System.Net;
+using System.Net.Mail;
 using System.Web.UI;
 namespace SikshaNew.Admin.MasterCourse
 {
@@ -28,6 +30,47 @@ namespace SikshaNew.Admin.MasterCourse
             SqlCommand cmd = new SqlCommand(q, conn);
             cmd.ExecuteNonQuery();
             Response.Write("<script>alert('New Master course added');</script>");
+
+            SendEmailToAllUsers(cname);
         }
+
+        
+
+        public void SendEmailToAllUsers(string courseName)
+        {
+            SqlCommand getEmailsCmd = new SqlCommand("select Email from Users where status = 'Active'", conn);
+            SqlDataReader rdr = getEmailsCmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                string toEmail = rdr["Email"].ToString();
+                string subject = "📚 New Course Added: " + courseName;
+                string body = $"Hello Learner,\n\nA new course \"{courseName}\" has been added to the Shiksha Academy platform.\n\n" +
+                              "👉 Explore the course in your dashboard and start learning today!\n\n" +
+                              "Happy Learning!\nTeam Shiksha Academy.";
+
+                SendEmail(toEmail, subject, body);
+            }
+
+            rdr.Close();
+        }
+
+
+        private void SendEmail(string toEmail, string subject, string body)
+        {
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("rrai07505@gmail.com");
+            mail.To.Add(toEmail);
+            mail.Subject = subject;
+            mail.Body = body;
+
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            smtp.Credentials = new NetworkCredential("rrai07505@gmail.com", "bprbcsejgyqgudls");
+            smtp.EnableSsl = true;
+
+            smtp.Send(mail);
+        }
+
+
     }
 }

@@ -10,7 +10,7 @@ namespace SikshaNew.User
         SqlConnection conn;
         protected void Page_Load(object sender, EventArgs e)
         {
-            Page.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
+
             string cnf = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
             conn = new SqlConnection(cnf);
             conn.Open();
@@ -21,62 +21,33 @@ namespace SikshaNew.User
                 if (!string.IsNullOrEmpty(paymentId))
                 {
                     SaveTransaction(paymentId);
-                    Response.Redirect("MyCourse.aspx");
+                    Response.Redirect("invoice.aspx?payment_id=" + paymentId);
                 }
             }
         }
 
         private void SaveTransaction(string paymentId)
         {
-            decimal amount = 0;
-            string status = "Success";
-
-            if (Session["Cart"] != null && Session["userEmail"] != null)
+            if (Session["Cart"] != null)
             {
-                DataTable dt = Session["Cart"] as DataTable;
-                string userEmail = Session["userEmail"].ToString();
+                DataTable cart = Session["Cart"] as DataTable;
 
-                // Get UserID from email
-                string userIdQuery = $"SELECT UserID FROM Users WHERE Email = '{userEmail}'";
-                SqlCommand userCmd = new SqlCommand(userIdQuery, conn);
-                object userIdObj = userCmd.ExecuteScalar();
-                if (userIdObj == null) return;
-                int userId = Convert.ToInt32(userIdObj);
-
-                foreach (DataRow row in dt.Rows)
+                foreach (DataRow row in cart.Rows)
                 {
-                    if (decimal.TryParse(row["SubcoursePrice"].ToString(), out decimal price))
-                    {
-                        amount += price;
-                    }
-                }
+                    string subcourseName = row["SubcourseName"].ToString();
+                    decimal price = Convert.ToDecimal(row["SubcoursePrice"]);
+                    string status = "Success";
 
-                // Insert into Transactions
-                string q = $"exec InsertTransaction '{paymentId}', '{status}', {amount}, {userId}";
+                    string q = $"exec InsertTransaction1 '{paymentId}','{subcourseName}','{price}','{status}'";
+                    SqlCommand cmd = new SqlCommand(q, conn);
+                    cmd.ExecuteNonQuery();
 
-                SqlCommand cmd = new SqlCommand(q, conn);
-                cmd.ExecuteNonQuery();
-
-                // Insert each course into SubscribedUsers
-                foreach (DataRow row in dt.Rows)
-                {
-                    int subcourseId = Convert.ToInt32(row["SubcourseId"]);
-                    string checkDup = $"SELECT COUNT(*) FROM SubscribedUsers WHERE UserID = {userId} AND SubCourseID = {subcourseId}";
-                    SqlCommand checkCmd = new SqlCommand(checkDup, conn);
-                    int exists = (int)checkCmd.ExecuteScalar();
-
-                    if (exists == 0)
-                    {
-                        string insert = $"INSERT INTO SubscribedUsers (UserID, SubCourseID) VALUES ({userId}, {subcourseId})";
-                        SqlCommand insertCmd = new SqlCommand(insert, conn);
-                        insertCmd.ExecuteNonQuery();
-                    }
                 }
 
                 Session["Cart"] = null;
             }
         }
-
-
     }
 }
+
+

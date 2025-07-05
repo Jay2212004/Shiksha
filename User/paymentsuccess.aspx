@@ -49,16 +49,18 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
- 
-         <div class="success-container">
-        <div class="success-icon">
-            <i class="fas fa-check-circle"></i>
-        </div>
-        <h2>Payment Successful</h2>
-        <p>Thank you for your purchase. Your transaction has been completed successfully.</p>
-        <a href="MyCourse.aspx" class="btn-dashboard">Go to your courses</a>
-    </div>
+   <h2>Payment Invoice</h2>
+    <asp:Panel ID="pnlInvoice" runat="server" Visible="false">
+        <table class="table table-bordered">
+                 <tr><th>Subcourse Name</th><td><asp:Label ID="lblSubcourseName" runat="server" /></td></tr>
+            <tr><th>Subcourse Price</th><td>₹ <asp:Label ID="lblSubcoursePrice" runat="server" /></td></tr>
+            <tr><th>Payment ID</th><td><asp:Label ID="lblPaymentId" runat="server" /></td></tr>
+            <tr><th>Status</th><td><asp:Label ID="lblStatus" runat="server" /></td></tr>
+            <tr><th>Payment Date</th><td><asp:Label ID="lblPaymentDate" runat="server" /></td></tr>
+        </table>
+    </asp:Panel>
 
-
+    <asp:Label ID="lblMessage" runat="server" ForeColor="Red" />
 
 </asp:Content>
+

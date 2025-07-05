@@ -5,10 +5,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <%--   Sort :   <asp:DropDownList ID="DropDownList2" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DropDownList2_SelectedIndexChanged">
-     <asp:ListItem>Low to High</asp:ListItem>
-     <asp:ListItem>High to Low</asp:ListItem>
- </asp:DropDownList>--%>
+ 
 
 
 

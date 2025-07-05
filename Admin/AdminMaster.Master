@@ -299,6 +299,7 @@
                 <ul class="submenu" id="menu6">
                     <li><a href="/Admin/UserAssignments.aspx"><i class="fas fa-list"></i>Users Assignments</a></li>
                     <li><a href="/Admin/Users_List.aspx"><i class="fas fa-list"></i>Users List</a></li>
+                    <li><a href="/Admin/LoginLogs.aspx"><i class="fas fa-list"></i>Users Logs</a></li>
                 </ul>
             </li>
 

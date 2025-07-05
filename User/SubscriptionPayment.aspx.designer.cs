@@ -11,70 +11,52 @@ namespace SikshaNew.User
 {
 
 
-    public partial class UserDashboard
+    public partial class SubscriptionPayment
     {
 
         /// <summary>
-        /// lblUserName control.
+        /// lblTotalAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUserName;
+        protected global::System.Web.UI.WebControls.Label lblTotalAmount;
 
         /// <summary>
-        /// lblCoursesSubscribed control.
+        /// Button1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCoursesSubscribed;
+        protected global::System.Web.UI.WebControls.Button Button1;
 
         /// <summary>
-        /// lblActiveCourses control.
+        /// TextBox1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblActiveCourses;
+        protected global::System.Web.UI.WebControls.TextBox TextBox1;
 
         /// <summary>
-        /// lblAmountSpent control.
+        /// Button2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAmountSpent;
+        protected global::System.Web.UI.WebControls.Button Button2;
 
         /// <summary>
-        /// lblAllSubCourses control.
+        /// btnPayNow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAllSubCourses;
-
-        /// <summary>
-        /// rptCoursesEnrolled control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptCoursesEnrolled;
-
-        /// <summary>
-        /// gvAssignments control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvAssignments;
+        protected global::System.Web.UI.WebControls.Button btnPayNow;
     }
 }

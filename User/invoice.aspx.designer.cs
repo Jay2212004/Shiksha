@@ -11,70 +11,61 @@ namespace SikshaNew.User
 {
 
 
-    public partial class UserDashboard
+    public partial class invoice
     {
 
         /// <summary>
-        /// lblUserName control.
+        /// lblPaymentId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUserName;
+        protected global::System.Web.UI.WebControls.Label lblPaymentId;
 
         /// <summary>
-        /// lblCoursesSubscribed control.
+        /// lblStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCoursesSubscribed;
+        protected global::System.Web.UI.WebControls.Label lblStatus;
 
         /// <summary>
-        /// lblActiveCourses control.
+        /// lblDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblActiveCourses;
+        protected global::System.Web.UI.WebControls.Label lblDate;
 
         /// <summary>
-        /// lblAmountSpent control.
+        /// rptInvoice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAmountSpent;
+        protected global::System.Web.UI.WebControls.Repeater rptInvoice;
 
         /// <summary>
-        /// lblAllSubCourses control.
+        /// lblTotal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAllSubCourses;
+        protected global::System.Web.UI.WebControls.Label lblTotal;
 
         /// <summary>
-        /// rptCoursesEnrolled control.
+        /// btnDownloadPDF control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptCoursesEnrolled;
-
-        /// <summary>
-        /// gvAssignments control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvAssignments;
+        protected global::System.Web.UI.WebControls.Button btnDownloadPDF;
     }
 }

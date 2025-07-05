@@ -33,7 +33,9 @@ namespace SikshaNew.User
             {
                 string type = rdr["subscription_type"].ToString();
                 string sub_course = rdr["subcourse_name"].ToString();
+                Session["sub_course"] = rdr["subcourse_name"].ToString();
                 string price = rdr["price"].ToString();
+                Session["subprice"] = rdr["price"].ToString();
                 string duration = rdr["duration"].ToString();
                 string icon = rdr["iconurl"].ToString();
 
@@ -75,7 +77,8 @@ namespace SikshaNew.User
             if (e.CommandName == "Buy")
             {
                 string selectedPlan = e.CommandArgument.ToString();
-                Response.Write($"<script>alert('You selected {selectedPlan} subscription');</script>");
+                
+                Response.Redirect("SubscriptionPayment.aspx");
             }
         }
     }

@@ -37,6 +37,7 @@ namespace SikshaNew.Admin.Material
             string q = $"exec AddAssignment '{mcoursename}','{scoursename}','{topicname}','{filePath}'";
             SqlCommand cmd = new SqlCommand(q, conn);
             cmd.ExecuteNonQuery();
+            SendEmailToAllUsers(mcoursename, scoursename, topicname, filename);
             Response.Write("<script>alert('New Material added');</script>");
         }
         public void fetchcourse()
@@ -73,6 +74,42 @@ namespace SikshaNew.Admin.Material
             DropDownList3.DataValueField = "Topic";
             DropDownList3.DataBind();
             //Session["TopicName"] = rdr["Topic"].ToString();
+        }
+        private void SendEmailToAllUsers(string course, string subcourse, string topic, string filename)
+        {
+            string subject = $"📄 New Study Material Uploaded: {topic}";
+            string body = $"Hello Learner,\n\nA new study material has been uploaded on the Shiksha Academy platform.\n\n" +
+                          $"📚 Course: {course}\n" +
+                          $"📘 Subcourse: {subcourse}\n" +
+                          $"🔖 Topic: {topic}\n" +
+                          $"📁 File: {filename}\n\n" +
+                          $"👉 Log in to your dashboard and download the material now!\n\n" +
+                          $"Happy Learning!\nTeam Shiksha Academy.";
+
+            SqlCommand getEmailsCmd = new SqlCommand("SELECT Email FROM Users WHERE status = 'Active'", conn);
+            SqlDataReader rdr = getEmailsCmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                string toEmail = rdr["Email"].ToString();
+                SendEmail(toEmail, subject, body);
+            }
+
+            rdr.Close();
+        }
+
+        private void SendEmail(string toEmail, string subject, string body)
+        {
+            System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
+            mail.From = new System.Net.Mail.MailAddress("rrai07505@gmail.com");
+            mail.To.Add(toEmail);
+            mail.Subject = subject;
+            mail.Body = body;
+
+            System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.gmail.com", 587);
+            smtp.Credentials = new System.Net.NetworkCredential("rrai07505@gmail.com", "bprbcsejgyqgudls");
+            smtp.EnableSsl = true;
+            smtp.Send(mail);
         }
 
         protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
